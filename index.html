@@ -1,0 +1,1688 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dayla Nail's – Boceto Web</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════
+   RESET & TOKENS
+═══════════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --white:      #FFFFFF;
+  --pearl:      #F7F5F2;
+  --gray-light: #E8E4E0;
+  --gray-mid:   #9E9994;
+  --charcoal:   #2B2B2B;
+  --black:      #111111;
+  --rose:       #D4A5A5;
+  --rose-soft:  #F0E0E0;
+  --gold:       #C9A96E;
+  --gold-light: #EDD9AC;
+
+  --font-d: 'Cormorant Garamond', serif;
+  --font-b: 'Inter', sans-serif;
+
+  --pad-x: clamp(20px, 6vw, 80px);
+  --pad-y: clamp(60px, 10vw, 120px);
+  --radius: 4px;
+}
+
+html {
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+}
+
+body {
+  font-family: var(--font-b);
+  background: var(--white);
+  color: var(--charcoal);
+  line-height: 1.6;
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
+img { max-width: 100%; display: block; }
+
+/* ═══════════════════════════════════════════
+   UTILS
+═══════════════════════════════════════════ */
+.label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 16px;
+}
+.label::before {
+  content: '';
+  display: block;
+  width: 28px;
+  height: 1px;
+  background: var(--gold);
+  flex-shrink: 0;
+}
+
+.display {
+  font-family: var(--font-d);
+  font-weight: 300;
+  line-height: 1.1;
+  color: var(--black);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 32px;
+  font-family: var(--font-b);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border-radius: var(--radius);
+  border: none;
+  cursor: pointer;
+  transition: all .22s ease;
+  white-space: nowrap;
+}
+.btn-dark  { background: var(--black); color: var(--white); }
+.btn-dark:hover  { background: var(--charcoal); }
+.btn-gold  { background: var(--gold); color: var(--white); }
+.btn-gold:hover  { background: #b8934d; }
+.btn-outline { background: transparent; color: var(--charcoal); border: 1px solid var(--gray-light); }
+.btn-outline:hover { border-color: var(--charcoal); }
+.btn-outline-w { background: transparent; color: var(--white); border: 1px solid rgba(255,255,255,.3); }
+.btn-outline-w:hover { border-color: var(--white); }
+
+/* ═══════════════════════════════════════════
+   NAVBAR
+═══════════════════════════════════════════ */
+nav {
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  background: rgba(255,255,255,.96);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--gray-light);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--pad-x);
+  height: 68px;
+  width: 100%;
+  box-sizing: border-box;
+  max-width: 100vw;
+}
+
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+.logo-img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  /*background: linear-gradient(135deg, var(--rose-soft), var(--gold-light));*/
+  border: 1.5px solid var(--gold-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-d);
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--charcoal);
+}
+.nav-name {
+  font-family: var(--font-d);
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--black);
+  letter-spacing: .02em;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  list-style: none;
+}
+.nav-links a {
+  text-decoration: none;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--gray-mid);
+  transition: color .2s;
+}
+.nav-links a:hover { color: var(--black); }
+
+.nav-hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+  padding: 6px;
+  background: none;
+  border: none;
+}
+.nav-hamburger span {
+  display: block;
+  width: 22px;
+  height: 1.5px;
+  background: var(--charcoal);
+  transition: all .25s;
+}
+
+.mobile-menu {
+  display: none;
+  position: fixed;
+  inset: 68px 0 0 0;
+  width: 100%;
+  max-width: 100vw;
+  background: var(--white);
+  z-index: 199;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+.mobile-menu.open { display: flex; }
+.mobile-menu a {
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--charcoal);
+}
+
+/* ═══════════════════════════════════════════
+   HERO
+═══════════════════════════════════════════ */
+#hero {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: calc(100vh - 68px);
+}
+
+.hero-text {
+  background: var(--pearl);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(40px, 7vw, 96px) clamp(28px, 5vw, 72px);
+}
+
+.hero-h1 {
+  font-size: clamp(42px, 5.5vw, 76px);
+  margin-bottom: 8px;
+}
+.hero-h1 em { font-style: italic; color: var(--rose); }
+
+.hero-sub {
+  font-size: clamp(12px, 1.2vw, 14px);
+  color: var(--gray-mid);
+  max-width: 380px;
+  line-height: 1.85;
+  margin-top: 12px;
+  margin-bottom: 40px;
+}
+
+.hero-btns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.hero-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 28px;
+  margin-top: 52px;
+  padding-top: 40px;
+  border-top: 1px solid var(--gray-light);
+}
+.stat strong {
+  display: block;
+  font-family: var(--font-d);
+  font-size: clamp(28px, 3vw, 40px);
+  font-weight: 300;
+  color: var(--black);
+  line-height: 1;
+}
+.stat span {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--gray-mid);
+  margin-top: 5px;
+  display: block;
+}
+
+.hero-visual {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(160deg, #f0ebe6, #ddd0c5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+}
+.hero-visual-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  opacity: .35;
+  color: var(--charcoal);
+  font-size: 11px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.hero-badge {
+  position: absolute;
+  bottom: 28px;
+  left: 28px;
+  background: var(--white);
+  padding: 14px 18px;
+  border-radius: var(--radius);
+  box-shadow: 0 8px 32px rgba(0,0,0,.1);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.badge-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #6DB986;
+  box-shadow: 0 0 0 3px rgba(109,185,134,.25);
+  flex-shrink: 0;
+}
+.hero-badge p { font-size: 12px; font-weight: 500; color: var(--charcoal); }
+.hero-badge small { font-size: 10px; color: var(--gray-mid); }
+
+/* ═══════════════════════════════════════════
+   SERVICIOS
+═══════════════════════════════════════════ */
+#servicios {
+  padding: var(--pad-y) var(--pad-x);
+  background: var(--white);
+}
+
+.section-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 52px;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.section-desc-right {
+  font-size: 13px;
+  color: var(--gray-mid);
+  max-width: 280px;
+  line-height: 1.8;
+  text-align: right;
+}
+
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 3px;
+}
+
+.svc {
+  background: var(--pearl);
+  padding: clamp(28px, 3vw, 44px) clamp(20px, 2.5vw, 36px);
+  cursor: pointer;
+  transition: background .25s, color .25s;
+  position: relative;
+  overflow: hidden;
+}
+.svc::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--gold);
+  transform: scaleX(0);
+  transition: transform .3s;
+}
+.svc:hover::after { transform: scaleX(1); }
+.svc:hover { background: var(--black); }
+.svc:hover .svc-name,
+.svc:hover .svc-desc,
+.svc:hover .svc-price { color: var(--white); }
+.svc:hover .svc-icon { border-color: rgba(255,255,255,.15); }
+
+.svc-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 1px solid var(--gray-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  margin-bottom: 24px;
+  transition: border-color .25s;
+}
+.svc-name {
+  font-family: var(--font-d);
+  font-size: clamp(18px, 2vw, 24px);
+  font-weight: 400;
+  color: var(--black);
+  margin-bottom: 10px;
+  transition: color .25s;
+}
+.svc-desc {
+  font-size: 12px;
+  color: var(--gray-mid);
+  line-height: 1.7;
+  margin-bottom: 24px;
+  transition: color .25s;
+}
+.svc-price {
+  font-family: var(--font-d);
+  font-size: clamp(22px, 2.5vw, 30px);
+  font-weight: 300;
+  color: var(--black);
+  transition: color .25s;
+}
+.svc-price sub {
+  font-family: var(--font-b);
+  font-size: 10px;
+  color: var(--gold);
+  letter-spacing: .1em;
+  margin-left: 4px;
+  vertical-align: middle;
+}
+
+/* ═══════════════════════════════════════════
+   RESERVA
+═══════════════════════════════════════════ */
+#reserva {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.reserva-left {
+  background: var(--black);
+  padding: clamp(48px, 8vw, 96px) clamp(28px, 6vw, 80px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.reserva-left .label { color: var(--gold); }
+.reserva-left .label::before { background: var(--gold); }
+
+.reserva-h2 {
+  font-size: clamp(34px, 4vw, 52px);
+  color: var(--white);
+  margin-bottom: 16px;
+}
+.reserva-h2 em { font-style: italic; color: var(--rose); }
+
+.reserva-desc {
+  font-size: 13px;
+  color: rgba(255,255,255,.5);
+  line-height: 1.85;
+  max-width: 360px;
+  margin-bottom: 36px;
+}
+
+.reserva-perks {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 40px;
+}
+.perk {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 12px;
+  color: rgba(255,255,255,.65);
+}
+.perk-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--gold); flex-shrink: 0; }
+
+.reserva-right {
+  background: var(--pearl);
+  padding: clamp(48px, 8vw, 96px) clamp(28px, 6vw, 80px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.cal-wrap {
+  background: var(--white);
+  border-radius: 8px;
+  padding: 28px;
+  box-shadow: 0 4px 24px rgba(0,0,0,.06);
+}
+.cal-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 22px;
+}
+.cal-month {
+  font-family: var(--font-d);
+  font-size: 20px;
+  font-weight: 400;
+  color: var(--black);
+}
+.cal-nav { display: flex; gap: 6px; }
+.cal-btn {
+  width: 28px; height: 28px;
+  border: 1px solid var(--gray-light);
+  background: none;
+  border-radius: var(--radius);
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--gray-mid);
+  display: flex; align-items: center; justify-content: center;
+  transition: border-color .2s;
+}
+.cal-btn:hover { border-color: var(--charcoal); color: var(--charcoal); }
+
+.cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 3px;
+  text-align: center;
+}
+.cal-lbl {
+  padding: 6px 0;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--gray-mid);
+}
+.cal-d {
+  padding: 9px 4px;
+  font-size: 12px;
+  color: var(--charcoal);
+  border-radius: 2px;
+  cursor: pointer;
+  transition: background .15s;
+}
+.cal-d:hover:not(.empty):not(.active) { background: var(--gray-light); }
+.cal-d.available { color: var(--rose); font-weight: 600; }
+.cal-d.active { background: var(--black); color: var(--white); }
+.cal-d.empty { color: transparent; pointer-events: none; }
+
+.cal-legend {
+  display: flex;
+  gap: 16px;
+  margin-top: 12px;
+  font-size: 10px;
+  color: var(--gray-mid);
+}
+.cal-legend span { display: flex; align-items: center; gap: 5px; }
+
+/* ═══════════════════════════════════════════
+   GALERÍA
+═══════════════════════════════════════════ */
+#galeria {
+  padding: var(--pad-y) var(--pad-x);
+  background: var(--white);
+}
+
+.gallery-tabs {
+  display: flex;
+  gap: 0;
+  border-bottom: 1px solid var(--gray-light);
+  margin-bottom: 36px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.gallery-tabs::-webkit-scrollbar { display: none; }
+
+.tab {
+  padding: 12px 24px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--gray-mid);
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  white-space: nowrap;
+  margin-bottom: -1px;
+  transition: all .2s;
+}
+.tab.active { color: var(--black); border-bottom-color: var(--black); }
+.tab:hover  { color: var(--charcoal); }
+
+/* Masonry-like grid usando CSS grid areas */
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-template-rows: repeat(3, clamp(140px, 18vw, 220px));
+  gap: 4px;
+}
+
+.gcell {
+  background: var(--gray-light);
+  border-radius: var(--radius);
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.gcell img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.gcell:nth-child(1) { grid-column: span 2; grid-row: span 2; background: linear-gradient(135deg,#e8ddd6,#d3c3ba); }
+.gcell:nth-child(2) { grid-column: span 2; background: linear-gradient(135deg,#dce0e4,#c5ccd4); }
+.gcell:nth-child(3) { grid-column: span 2; background: linear-gradient(135deg,#ede6e0,#d9cec5); }
+.gcell:nth-child(4) { grid-column: span 1; background: linear-gradient(135deg,#e4dce0,#cfc4c8); }
+.gcell:nth-child(5) { grid-column: span 1; background: linear-gradient(135deg,#dce4dc,#c4d0c4); }
+.gcell:nth-child(6) { grid-column: span 3; background: linear-gradient(135deg,#e8e4dc,#d0ccc0); }
+.gcell:nth-child(7) { grid-column: span 1; background: linear-gradient(135deg,#e0dce4,#c8c4d0); }
+
+.gcell-over {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,.45);
+  opacity: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--white);
+  font-size: 10px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  transition: opacity .22s;
+}
+.gcell:hover .gcell-over { opacity: 1; }
+
+.gallery-cta {
+  text-align: center;
+  margin-top: 44px;
+}
+
+/* ═══════════════════════════════════════════
+   SOBRE DAYLA
+═══════════════════════════════════════════ */
+#sobre {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  background: var(--pearl);
+}
+
+.sobre-visual {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(48px, 8vw, 96px) clamp(28px, 5vw, 64px);
+  background: var(--gray-light);
+}
+.portrait {
+  width: min(300px, 80%);
+  aspect-ratio: 3/4;
+  background: linear-gradient(160deg,#e0d5cc,#cfc1b6);
+  border-radius: var(--radius);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gray-mid);
+  font-size: 11px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  position: relative;
+}
+.portrait-tag {
+  position: absolute;
+  bottom: -18px;
+  right: -18px;
+  background: var(--white);
+  padding: 18px 22px;
+  border-radius: var(--radius);
+  box-shadow: 0 8px 32px rgba(0,0,0,.12);
+  text-align: center;
+}
+.portrait-tag strong {
+  display: block;
+  font-family: var(--font-d);
+  font-size: 34px;
+  font-weight: 300;
+  color: var(--black);
+  line-height: 1;
+}
+.portrait-tag small {
+  font-size: 10px;
+  color: var(--gray-mid);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+.sobre-content {
+  padding: clamp(48px, 8vw, 96px) clamp(28px, 6vw, 80px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.sobre-h2 {
+  font-size: clamp(40px, 4.5vw, 60px);
+  margin-bottom: 20px;
+}
+.sobre-h2 em { font-style: italic; color: var(--rose); }
+
+.sobre-p {
+  font-size: 13px;
+  color: var(--gray-mid);
+  line-height: 1.9;
+  max-width: 420px;
+  margin-bottom: 32px;
+}
+
+.values {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-bottom: 40px;
+}
+.value {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 13px;
+}
+.vdot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); flex-shrink: 0; }
+.value strong { color: var(--black); }
+.value span { color: var(--gray-mid); }
+
+/* ═══════════════════════════════════════════
+   TESTIMONIOS
+═══════════════════════════════════════════ */
+#testimonios {
+  background: var(--black);
+  padding: var(--pad-y) var(--pad-x);
+}
+#testimonios .label { color: var(--gold); }
+#testimonios .label::before { background: var(--gold); }
+
+.testi-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 52px;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+.testi-h2 {
+  font-size: clamp(32px, 4vw, 52px);
+  color: var(--white);
+}
+
+.testi-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 3px;
+}
+
+.tcard {
+  background: rgba(255,255,255,.05);
+  border: 1px solid rgba(255,255,255,.07);
+  padding: clamp(28px, 3.5vw, 44px) clamp(24px, 3vw, 36px);
+  border-radius: var(--radius);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.tcard-stars { color: var(--gold); font-size: 13px; letter-spacing: 3px; }
+.tcard-q {
+  font-family: var(--font-d);
+  font-size: clamp(15px, 1.6vw, 19px);
+  font-style: italic;
+  font-weight: 300;
+  color: rgba(255,255,255,.82);
+  line-height: 1.7;
+  flex: 1;
+}
+.tcard-author {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.tcard-av {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-d);
+  font-size: 17px;
+  color: var(--gold);
+  flex-shrink: 0;
+}
+.tcard-name { font-size: 13px; color: var(--white); font-weight: 500; }
+.tcard-role { font-size: 11px; color: rgba(255,255,255,.4); }
+
+/* ═══════════════════════════════════════════
+   CONTACTO
+═══════════════════════════════════════════ */
+#contacto {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.map-block {
+  background: linear-gradient(160deg, #d0dcc8, #b8cbb0);
+  min-height: 480px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  position: relative;
+  color: #6b806a;
+  font-size: 11px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  text-align: center;
+}
+.map-icon {
+  width: 52px; height: 52px;
+  background: var(--white);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  box-shadow: 0 4px 16px rgba(0,0,0,.15);
+}
+.map-label-card {
+  position: absolute;
+  bottom: 28px;
+  left: 28px;
+  background: var(--white);
+  padding: 16px 20px;
+  border-radius: var(--radius);
+  box-shadow: 0 8px 24px rgba(0,0,0,.12);
+}
+.map-label-card strong { display: block; font-size: 13px; color: var(--black); margin-bottom: 3px; }
+.map-label-card small { font-size: 11px; color: var(--gray-mid); }
+
+.contact-block {
+  background: var(--pearl);
+  padding: clamp(48px, 8vw, 96px) clamp(28px, 6vw, 80px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.contact-h2 {
+  font-size: clamp(34px, 4vw, 48px);
+  margin-bottom: 36px;
+}
+
+.cinfo { display: flex; flex-direction: column; gap: 22px; margin-bottom: 40px; }
+.crow {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+.cicon {
+  width: 40px; height: 40px;
+  background: var(--white);
+  border-radius: var(--radius);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,.06);
+  flex-shrink: 0;
+}
+.cdetail strong {
+  display: block;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--black);
+  margin-bottom: 3px;
+}
+.cdetail span { font-size: 13px; color: var(--gray-mid); }
+
+.form-stack { display: flex; flex-direction: column; gap: 10px; }
+.finput {
+  background: var(--white);
+  border: 1px solid var(--gray-light);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  font-size: 13px;
+  color: var(--charcoal);
+  font-family: var(--font-b);
+  width: 100%;
+  transition: border-color .2s;
+}
+.finput:focus { outline: none; border-color: var(--gold); }
+
+/* ═══════════════════════════════════════════
+   FOOTER
+═══════════════════════════════════════════ */
+footer {
+  background: var(--charcoal);
+  color: rgba(255,255,255,.55);
+  padding: clamp(48px, 7vw, 80px) var(--pad-x) 32px;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 40px;
+  margin-bottom: 52px;
+}
+
+.footer-brand .fn { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+.footer-brand .fn span {
+  font-family: var(--font-d);
+  font-size: 18px;
+  font-weight: 600;
+  color: rgba(255,255,255,.85);
+}
+.footer-brand p { font-size: 12px; line-height: 1.85; max-width: 260px; margin-bottom: 22px; }
+
+.socials { display: flex; gap: 8px; }
+.sbtn {
+  width: 36px; height: 36px;
+  background: rgba(255,255,255,.08);
+  border-radius: var(--radius);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background .2s;
+}
+.sbtn:hover { background: rgba(255,255,255,.18); }
+
+.footer-col h5 {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.9);
+  margin-bottom: 18px;
+}
+.footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.footer-col li { font-size: 12px; cursor: pointer; transition: color .2s; }
+.footer-col li:hover { color: rgba(255,255,255,.9); }
+
+.footer-bottom {
+  border-top: 1px solid rgba(255,255,255,.08);
+  padding-top: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 11px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* ═══════════════════════════════════════════
+   COTIZACIÓN CARD
+═══════════════════════════════════════════ */
+.cot-radio {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--charcoal);
+  cursor: pointer;
+  padding: 8px 14px;
+  border: 1px solid var(--gray-light);
+  border-radius: var(--radius);
+  background: var(--white);
+  transition: all .2s;
+  user-select: none;
+}
+.cot-radio input[type="radio"] { display: none; }
+.cot-radio:has(input:checked) {
+  background: var(--black);
+  color: var(--white);
+  border-color: var(--black);
+}
+
+/* ═══════════════════════════════════════════
+   WA FLOAT
+═══════════════════════════════════════════ */
+.wa-float {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  width: 54px; height: 54px;
+  background: #25D366;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  box-shadow: 0 4px 20px rgba(37,211,102,.4);
+  cursor: pointer;
+  z-index: 300;
+  text-decoration: none;
+  animation: waPulse 3s ease-in-out infinite;
+}
+@keyframes waPulse {
+  0%,100% { box-shadow: 0 4px 20px rgba(37,211,102,.4); }
+  50%      { box-shadow: 0 4px 32px rgba(37,211,102,.7); }
+}
+.wa-tip {
+  position: fixed;
+  bottom: 36px;
+  right: 90px;
+  background: var(--white);
+  padding: 9px 14px;
+  border-radius: var(--radius);
+  box-shadow: 0 4px 16px rgba(0,0,0,.1);
+  font-size: 12px;
+  color: var(--charcoal);
+  white-space: nowrap;
+  z-index: 299;
+  max-width: calc(100vw - 110px);
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.wa-tip::after {
+  content: '';
+  position: absolute;
+  right: -5px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: 5px solid transparent;
+  border-left-color: var(--white);
+}
+
+/* ═══════════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════════ */
+
+/* Large tablet (≤1100px) — 2 servicios por fila */
+@media (max-width: 1100px) {
+  .services-grid { grid-template-columns: repeat(2, 1fr); }
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+  .gallery-grid {
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(3, clamp(120px, 20vw, 180px));
+  }
+  .gcell:nth-child(1) { grid-column: span 2; }
+  .gcell:nth-child(6) { grid-column: span 2; }
+}
+
+/* Tablet (≤900px) — stack splits */
+@media (max-width: 900px) {
+  #hero      { grid-template-columns: 1fr; }
+  .hero-visual { min-height: 300px; }
+  #reserva   { grid-template-columns: 1fr; }
+  #sobre     { grid-template-columns: 1fr; }
+  .sobre-visual { padding-bottom: 60px; }
+  #contacto  { grid-template-columns: 1fr; }
+  .map-block { min-height: 320px; }
+  .testi-grid { grid-template-columns: 1fr; gap: 12px; }
+  .section-desc-right { text-align: left; }
+  .section-head { flex-direction: column; align-items: flex-start; }
+  .testi-header { flex-direction: column; align-items: flex-start; }
+  .portrait-tag { right: -10px; bottom: -10px; }
+}
+
+/* Mobile (≤640px) */
+@media (max-width: 640px) {
+  .nav-links { display: none; }
+  .nav-hamburger { display: flex; }
+
+  .hero-text { padding: 48px 24px; }
+  .hero-stats { gap: 20px; }
+
+  .services-grid { grid-template-columns: 1fr; }
+
+  .gallery-grid {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(4, 160px);
+  }
+  .gcell:nth-child(1) { grid-column: span 2; }
+  .gcell:nth-child(2),
+  .gcell:nth-child(3),
+  .gcell:nth-child(6) { grid-column: span 1; }
+
+  .footer-grid { grid-template-columns: 1fr; }
+
+  .wa-tip { display: none; }
+
+  .reserva-left, .reserva-right,
+  .sobre-content, .sobre-visual,
+  .contact-block { padding: 48px 24px; }
+
+  /* Reserva: el card de cotización no se desborde */
+  .reserva-right {
+    overflow: hidden;
+  }
+  .reserva-right .cal-wrap {
+    max-width: 100%;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  #servicios, #galeria, #testimonios { padding: 60px 24px; }
+
+  .hero-btns { flex-direction: column; align-items: flex-start; }
+  .btn { width: 100%; justify-content: center; }
+
+  .footer-bottom { flex-direction: column; align-items: flex-start; }
+}
+
+/* Very small (≤380px) */
+@media (max-width: 380px) {
+  :root { --pad-x: 16px; }
+  .hero-h1 { font-size: 38px; }
+}
+
+/* ── Extra mobile fixes for cotización card ── */
+@media (max-width: 640px) {
+  /* Radio buttons de largo: wrap en 2 columnas */
+  .cot-radio { flex: 1 1 calc(50% - 4px); justify-content: center; }
+
+  /* Cal-wrap / cotización card full width */
+  .reserva-right .cal-wrap { padding: 24px 18px; }
+
+  /* Map-block altura en móvil */
+  .map-block { min-height: 260px; }
+
+  /* Hero imagen ocupa más en móvil */
+  .hero-visual { min-height: 260px; }
+
+  /* Portrait tag no se sale de la pantalla */
+  .portrait-tag { right: 0; bottom: -14px; padding: 12px 16px; }
+  .portrait-tag strong { font-size: 26px; }
+
+  /* Galería mobile: corregir gcell que quedaba sin span definido */
+  .gcell:nth-child(4),
+  .gcell:nth-child(5),
+  .gcell:nth-child(7) { grid-column: span 1; }
+
+  /* Formulario cotización: selects y inputs full width */
+  #cot-nombre, #cot-tel, #cot-servicio, #cot-fecha { font-size: 16px; } /* evita zoom iOS */
+
+  /* Sección reserva sin overflow horizontal */
+  #reserva { overflow: hidden; }
+
+  /* Todos los inputs y selects dentro del formulario no se desborden */
+  .finput, select.finput { max-width: 100%; }
+
+  /* Contenedores de formulario dentro de reserva */
+  #reserva [style*="margin-bottom"] { box-sizing: border-box; max-width: 100%; }
+}
+</style>
+</head>
+<body>
+
+<!-- ╔══════════════════════════════════════╗ -->
+<!-- ║           NAVBAR                     ║ -->
+<!-- ╚══════════════════════════════════════╝ -->
+<nav>
+  <a href="#" class="nav-logo">
+    <img src="logo.png" alt="Dayla Nail's" class="logo-img">
+  </a>
+
+  <ul class="nav-links">
+    <li><a href="#servicios">Servicios</a></li>
+    <li><a href="#galeria">Galería</a></li>
+    <li><a href="#sobre">Nosotras</a></li>
+    <li><a href="#testimonios">Reseñas</a></li>
+    <li><a href="#contacto">Contacto</a></li>
+    <li><a href="#reserva" class="btn btn-dark" style="padding:10px 22px;font-size:10px;">Reservar cita</a></li>
+  </ul>
+
+  <button class="nav-hamburger" id="burger" aria-label="Menú">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- Mobile menu -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#servicios" onclick="closeMenu()">Servicios</a>
+  <a href="#galeria"   onclick="closeMenu()">Galería</a>
+  <a href="#sobre"     onclick="closeMenu()">Nosotras</a>
+  <a href="#testimonios" onclick="closeMenu()">Reseñas</a>
+  <a href="#contacto"  onclick="closeMenu()">Contacto</a>
+  <a href="#reserva"   onclick="closeMenu()" class="btn btn-dark" style="margin-top:8px;">Reservar cita</a>
+</div>
+
+<!-- ╔══════════════════════════════════════╗ -->
+<!-- ║           HERO                       ║ -->
+<!-- ╚══════════════════════════════════════╝ -->
+<section id="hero">
+  <div class="hero-text">
+    <p class="label">Estudio de Nail Art · Cita previa</p>
+
+    <h1 class="display hero-h1">
+      El arte<br>
+      empieza en<br>
+      <em>tus manos</em>
+    </h1>
+
+    <p class="hero-sub">
+      Uñas acrílicas, gelish y nail art personalizado. Diseños únicos con materiales de alta duración y una atención que va más allá del servicio.
+    </p>
+
+    <div class="hero-btns">
+      <a href="#reserva" class="btn btn-dark">Reservar mi cita</a>
+      <a href="#galeria"  class="btn btn-outline">Ver galería</a>
+    </div>
+
+    <div class="hero-stats">
+      <div class="stat">
+        <strong>500+</strong>
+        <span>clientas felices</span>
+      </div>
+      <div class="stat">
+        <strong>5 años</strong>
+        <span>de experiencia</span>
+      </div>
+      <div class="stat">
+        <strong>100%</strong>
+        <span>diseño propio</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-visual">
+    <img src="hero.jpg" alt="Nail art Dayla" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
+
+    <div class="hero-badge">
+      <div class="badge-dot"></div>
+      <div>
+        <p>Agenda abierta esta semana</p>
+        <small>Últimos 4 turnos disponibles</small>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ╔══════════════════════════════════════╗ -->
+<!-- ║           SERVICIOS                  ║ -->
+<!-- ╚══════════════════════════════════════╝ -->
+<section id="servicios">
+  <div class="section-head">
+    <div>
+      <p class="label">Lo que hacemos</p>
+      <h2 class="display" style="font-size:clamp(34px,4vw,52px);">Nuestros<br>servicios</h2>
+    </div>
+    <p class="section-desc-right">Cada servicio incluye consulta personalizada, asesoramiento de diseño y productos de marca certificada.</p>
+  </div>
+
+  <div class="services-grid">
+    <div class="svc">
+      <div class="svc-icon">💅</div>
+      <p class="svc-name">Uñas Acrílicas</p>
+      <p class="svc-desc">Longitud y forma a tu medida. Duración de 3 a 4 semanas con mantenimiento incluido.</p>
+      <p class="svc-price">$XXX <sub>desde</sub></p>
+    </div>
+    <div class="svc">
+      <div class="svc-icon">✨</div>
+      <p class="svc-name">Gelish</p>
+      <p class="svc-desc">Acabado espejo de larga duración. Colección de más de 120 tonos disponibles.</p>
+      <p class="svc-price">$XXX <sub>desde</sub></p>
+    </div>
+    <div class="svc">
+      <div class="svc-icon">🎨</div>
+      <p class="svc-name">Nail Art</p>
+      <p class="svc-desc">Diseños exclusivos: flores 3D, mármol, degradados y todo lo que tu imaginación proponga.</p>
+      <p class="svc-price">$XXX <sub>desde</sub></p>
+    </div>
+    <div class="svc">
+      <div class="svc-icon">🌸</div>
+      <p class="svc-name">Pedicura</p>
+      <p class="svc-desc">Tratamiento completo de pies: exfoliación, hidratación profunda y esmaltado premium.</p>
+      <p class="svc-price">$XXX <sub>desde</sub></p>
+    </div>
+  </div>
+</section>
+
+<!-- ╔══════════════════════════════════════╗ -->
+<!-- ║           RESERVA                    ║ -->
+<!-- ╚══════════════════════════════════════╝ -->
+<section id="reserva">
+  <div class="reserva-left">
+    <p class="label">Agenda en línea</p>
+    <h2 class="display reserva-h2">
+      Tu próxima cita,<br><em>en un clic</em>
+    </h2>
+    <p class="reserva-desc">Elige el día y la hora que más te convenga. Recibirás confirmación inmediata por WhatsApp y un recordatorio 24 horas antes.</p>
+
+    <div class="reserva-perks">
+      <div class="perk"><div class="perk-dot"></div>Confirmación instantánea vía WhatsApp</div>
+      <div class="perk"><div class="perk-dot"></div>Recordatorio automático 24 h antes</div>
+      <div class="perk"><div class="perk-dot"></div>Sin filas, sin esperas innecesarias</div>
+    </div>
+
+    <a href="#" class="btn btn-gold" style="align-self:flex-start;">Ver disponibilidad</a>
+  </div>
+
+  <div class="reserva-right">
+    <div class="cal-wrap" style="max-width:480px;width:100%;">
+      <p style="font-family:var(--font-d);font-size:22px;font-weight:400;color:var(--black);margin-bottom:6px;">Pedir cotización</p>
+      <p style="font-size:12px;color:var(--gray-mid);line-height:1.7;margin-bottom:24px;">Completá el formulario y te responderemos por WhatsApp con el precio y la fecha ideal para vos.</p>
+
+      <!-- Nombre -->
+      <div style="margin-bottom:12px;">
+        <label style="display:block;font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--black);margin-bottom:6px;">Tu nombre</label>
+        <input id="cot-nombre" class="finput" type="text" placeholder="Ej: María García">
+      </div>
+
+      <!-- Teléfono -->
+      <div style="margin-bottom:12px;">
+        <label style="display:block;font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--black);margin-bottom:6px;">WhatsApp / Teléfono</label>
+        <input id="cot-tel" class="finput" type="tel" placeholder="Ej: +53 5 XXX XXXX">
+      </div>
+
+      <!-- Servicio -->
+      <div style="margin-bottom:12px;">
+        <label style="display:block;font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--black);margin-bottom:6px;">Estilo / Servicio</label>
+        <select id="cot-servicio" class="finput" style="appearance:none;background-image:url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2212%22 height=%228%22 viewBox=%220 0 12 8%22><path d=%22M1 1l5 5 5-5%22 stroke=%22%239E9994%22 stroke-width=%221.5%22 fill=%22none%22/></svg>');background-repeat:no-repeat;background-position:right 14px center;cursor:pointer;">
+          <option value="">Seleccionar servicio…</option>
+          <option>Uñas Acrílicas</option>
+          <option>Gelish</option>
+          <option>Nail Art</option>
+          <option>Pedicura</option>
+          <option>Acrílicas + Nail Art</option>
+        </select>
+      </div>
+
+      <!-- Largo -->
+      <div style="margin-bottom:12px;">
+        <label style="display:block;font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--black);margin-bottom:6px;">Largo de uñas</label>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <label class="cot-radio"><input type="radio" name="largo" value="Cortas"> <span>Cortas</span></label>
+          <label class="cot-radio"><input type="radio" name="largo" value="Medianas"> <span>Medianas</span></label>
+          <label class="cot-radio"><input type="radio" name="largo" value="Largas"> <span>Largas</span></label>
+          <label class="cot-radio"><input type="radio" name="largo" value="Extra largas"> <span>Extra largas</span></label>
+        </div>
+      </div>
+
+      <!-- Fecha deseada -->
+      <div style="margin-bottom:20px;">
+        <label style="display:block;font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--black);margin-bottom:6px;">Fecha ideal (aproximada)</label>
+        <input id="cot-fecha" class="finput" type="text" placeholder="Ej: primer semana de julio, 15 de julio…">
+        <p style="font-size:10px;color:var(--gray-mid);margin-top:5px;">Dayla revisará su agenda y te propone la mejor fecha disponible.</p>
+      </div>
+
+      <!-- Botón -->
+      <button onclick="enviarCotizacion()" class="btn btn-gold" style="width:100%;justify-content:center;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.124.558 4.117 1.533 5.845L.057 23.887a.5.5 0 0 0 .611.612l6.198-1.51A11.94 11.94 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.885 0-3.647-.52-5.148-1.424l-.369-.22-3.827.932.978-3.75-.242-.387A9.956 9.956 0 0 1 2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+        Enviar cotización por WhatsApp
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ╔══════════════════════════════════════╗ -->
+<!-- ║           GALERÍA                    ║ -->
+<!-- ╚══════════════════════════════════════╝ -->
+<section id="galeria">
+  <div class="section-head">
+    <div>
+      <p class="label">Trabajos realizados</p>
+      <h2 class="display" style="font-size:clamp(34px,4vw,52px);">Galería<br>de diseños</h2>
+    </div>
+  </div>
+
+  <div class="gallery-tabs">
+    <div class="tab active">Todos</div>
+    <div class="tab">Acrílicas</div>
+    <div class="tab">Gelish</div>
+    <div class="tab">Nail Art</div>
+    <div class="tab">Pedicura</div>
+  </div>
+
+  <div class="gallery-grid">
+    <div class="gcell">
+      <img src="galeria1.jpg" alt="Diseño 1" style="width:100%;height:100%;object-fit:cover;">
+      <div class="gcell-over">Ver diseño</div>
+    </div>
+    <div class="gcell">
+      <img src="galeria2.jpg" alt="Diseño 2" style="width:100%;height:100%;object-fit:cover;">
+      <div class="gcell-over">Ver diseño</div>
+    </div>
+    <div class="gcell">
+      <img src="galeria3.jpg" alt="Diseño 3" style="width:100%;height:100%;object-fit:cover;">
+      <div class="gcell-over">Ver diseño</div>
+    </div>
+    <div class="gcell">
+      <img src="galeria4.jpg" alt="Diseño 4" style="width:100%;height:100%;object-fit:cover;">
+      <div class="gcell-over">Ver</div>
+    </div>
+    <div class="gcell">
+      <img src="galeria5.jpg" alt="Diseño 5" style="width:100%;height:100%;object-fit:cover;">
+      <div class="gcell-over">Ver</div>
+    </div>
+    <div class="gcell">
+      <img src="galeria6.jpg" alt="Diseño 6" style="width:100%;height:100%;object-fit:cover;">
+      <div class="gcell-over">Ver diseño</div>
+    </div>
+    <div class="gcell">
+      <img src="galeria7.jpg" alt="Diseño 7" style="width:100%;height:100%;object-fit:cover;">
+      <div class="gcell-over">Ver</div>
+    </div>
+  </div>
+
+  <div class="gallery-cta">
+    <a href="#" class="btn btn-outline">Ver todos los trabajos</a>
+  </div>
+</section>
+
+<!-- ╔══════════════════════════════════════╗ -->
+<!-- ║           SOBRE DAYLA                ║ -->
+<!-- ╚══════════════════════════════════════╝ -->
+<section id="sobre">
+  <div class="sobre-visual">
+    <div class="portrait">
+      <img src="dayla.jpg" alt="Dayla" style="width:100%;height:100%;object-fit:cover;border-radius:var(--radius);">
+      <div class="portrait-tag">
+        <strong>+5</strong>
+        <small>años de exp.</small>
+      </div>
+    </div>
+  </div>
+
+  <div class="sobre-content">
+    <p class="label">La artista detrás</p>
+    <h2 class="display sobre-h2">Hola, soy<br><em>Dayla</em></h2>
+    <p class="sobre-p">
+      Soy técnica en uñas especializada en nail art de precisión. Cada diseño nace de escuchar lo que tú quieres expresar. No creo en las uñas genéricas: creo en piezas que digan algo tuyo.
+    </p>
+    <div class="values">
+      <div class="value">
+        <div class="vdot"></div>
+        <div><strong>Creatividad</strong> — <span>cada diseño es irrepetible</span></div>
+      </div>
+      <div class="value">
+        <div class="vdot"></div>
+        <div><strong>Confianza</strong> — <span>materiales de alta duración, resultados garantizados</span></div>
+      </div>
+      <div class="value">
+        <div class="vdot"></div>
+        <div><strong>Elegancia</strong> — <span>una experiencia premium de principio a fin</span></div>
+      </div>
+    </div>
+    <a href="#reserva" class="btn btn-dark" style="align-self:flex-start;">Reservar con Dayla</a>
+  </div>
+</section>
+
+<!-- ╔══════════════════════════════════════╗ -->
+<!-- ║           TESTIMONIOS                ║ -->
+<!-- ╚══════════════════════════════════════╝ -->
+<section id="testimonios">
+  <div class="testi-header">
+    <div>
+      <p class="label">Lo que dicen</p>
+      <h2 class="display testi-h2">Clientas que<br>volvieron a sonreír</h2>
+    </div>
+    <a href="#" class="btn btn-outline-w" style="align-self:flex-end;">Ver todas las reseñas</a>
+  </div>
+
+  <div class="testi-grid">
+    <div class="tcard">
+      <div class="tcard-stars">★★★★★</div>
+      <p class="tcard-q">"Llevaba meses buscando a alguien que entendiera exactamente lo que quería. Dayla lo logró en la primera cita. Mis uñas duran semanas impecables."</p>
+      <div class="tcard-author">
+        <div class="tcard-av">S</div>
+        <div>
+          <p class="tcard-name">Sofía M.</p>
+          <p class="tcard-role">Clienta recurrente · Gelish</p>
+        </div>
+      </div>
+    </div>
+    <div class="tcard">
+      <div class="tcard-stars">★★★★★</div>
+      <p class="tcard-q">"El nail art que me hizo para mi graduación fue mejor de lo que imaginé. Todos me preguntaban dónde me las había hecho. ¡Ya tengo cita para el mes que viene!"</p>
+      <div class="tcard-author">
+        <div class="tcard-av">V</div>
+        <div>
+          <p class="tcard-name">Valentina R.</p>
+          <p class="tcard-role">Clienta nueva · Nail Art</p>
+        </div>
+      </div>
+    </div>
+    <div class="tcard">
+      <div class="tcard-stars">★★★★★</div>
+      <p class="tcard-q">"El espacio es limpio, tranquilo y Dayla es una profesional increíble. Los precios son justos para la calidad que recibes. No voy a ningún otro lugar."</p>
+      <div class="tcard-author">
+        <div class="tcard-av">C</div>
+        <div>
+          <p class="tcard-name">Camila T.</p>
+          <p class="tcard-role">Clienta frecuente · Acrílicas</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ╔══════════════════════════════════════╗ -->
+<!-- ║           CONTACTO                   ║ -->
+<!-- ╚══════════════════════════════════════╝ -->
+<section id="contacto">
+  <div class="map-block">
+    <img src="mapa.jpg" alt="Ubicación Dayla Nail's" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;">
+    <div style="position:absolute;inset:0;background:rgba(0,0,0,.18);z-index:1;"></div>
+    <div class="map-icon" style="position:relative;z-index:2;">📍</div>
+    <div class="map-label-card" style="z-index:2;">
+      <strong>Dayla Nail's Studio</strong>
+      <small>Dirección completa aquí</small>
+    </div>
+  </div>
+
+  <div class="contact-block">
+    <p class="label">Encuéntranos</p>
+    <h2 class="display contact-h2">Contacto<br>& Ubicación</h2>
+
+    <div class="cinfo">
+      <div class="crow">
+        <div class="cicon">📍</div>
+        <div class="cdetail"><strong>Dirección</strong><span>Tu dirección completa aquí, Ciudad</span></div>
+      </div>
+      <div class="crow">
+        <div class="cicon">📱</div>
+        <div class="cdetail"><strong>WhatsApp</strong><span>+53 56454959</span></div>
+      </div>
+      <div class="crow">
+        <div class="cicon">🕐</div>
+        <div class="cdetail"><strong>Horario</strong><span>Lunes a Sábado · 9:00 – 18:00 h</span></div>
+      </div>
+      <div class="crow">
+        <div class="cicon">📸</div>
+        <div class="cdetail"><strong>Redes sociales</strong><span>@dayla.nails · Instagram & TikTok</span></div>
+      </div>
+    </div>
+
+    <div class="form-stack">
+      <input class="finput" type="text" placeholder="Tu nombre completo">
+      <input class="finput" type="email" placeholder="Tu correo electrónico">
+      <input class="finput" type="tel" placeholder="Tu número de teléfono">
+      <a href="#" class="btn btn-dark" style="text-align:center;">Quiero que me contacten</a>
+    </div>
+  </div>
+</section>
+
+<!-- ╔══════════════════════════════════════╗ -->
+<!-- ║           FOOTER                     ║ -->
+<!-- ╚══════════════════════════════════════╝ -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="fn">
+        <div class="logo-circle" style="background-color: var(--pearl); border-radius: 50%;">
+          <img src="logo.png" alt="#">
+        </div>
+      </div>
+      <p>Estudio de uñas y nail art personalizado. Porque cada detalle importa, y tus manos merecen lo mejor.</p>
+      <div class="socials">
+        <div class="sbtn">📸</div>
+        <div class="sbtn">🎵</div>
+        <div class="sbtn">💬</div>
+      </div>
+    </div>
+
+    <div class="footer-col">
+      <h5>Servicios</h5>
+      <ul>
+        <li>Uñas Acrílicas</li>
+        <li>Gelish</li>
+        <li>Nail Art</li>
+        <li>Pedicura</li>
+        <li>Retiro de uñas</li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <h5>Estudio</h5>
+      <ul>
+        <li>Sobre Dayla</li>
+        <li>Galería</li>
+        <li>Testimonios</li>
+        <li>Blog / Tendencias</li>
+        <li>Preguntas frecuentes</li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <h5>Legal</h5>
+      <ul>
+        <li>Política de reservas</li>
+        <li>Términos y condiciones</li>
+        <li>Privacidad</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <p>© 2026 Dayla Nail's. Todos los derechos reservados.</p>
+    <p>Diseñado con ✦ para mujeres que cuidan cada detalle</p>
+  </div>
+</footer>
+
+<!-- WhatsApp flotante -->
+<div class="wa-tip">¿Tienes dudas? Escríbeme 💬</div>
+<a href="https://wa.me/TUNUMERO" class="wa-float" target="_blank">💬</a>
+
+<script>
+/* ── Cotización WhatsApp ── */
+function enviarCotizacion() {
+  const nombre   = document.getElementById('cot-nombre').value.trim();
+  const tel      = document.getElementById('cot-tel').value.trim();
+  const servicio = document.getElementById('cot-servicio').value;
+  const largo    = document.querySelector('input[name="largo"]:checked')?.value || '';
+  const fecha    = document.getElementById('cot-fecha').value.trim();
+
+  if (!nombre || !tel || !servicio || !largo || !fecha) {
+    alert('Por favor completá todos los campos antes de enviar 💅');
+    return;
+  }
+
+  const msg = `¡Hola Dayla! 💅 Quiero pedir una cotización:\n\n` +
+    `👤 Nombre: ${nombre}\n` +
+    `📱 Teléfono: ${tel}\n` +
+    `✨ Servicio: ${servicio}\n` +
+    `💅 Largo: ${largo}\n` +
+    `📅 Fecha ideal: ${fecha}\n\n` +
+    `¡Quedo atenta a tu respuesta!`;
+
+  const waNumber = '5356454959'; // ← número sin + ni espacios
+  window.open(`https://wa.me/${waNumber}?text=${encodeURIComponent(msg)}`, '_blank');
+}
+
+/* ── Mobile menu ── */
+const burger = document.getElementById('burger');
+const mMenu  = document.getElementById('mobileMenu');
+let open = false;
+
+burger.addEventListener('click', () => {
+  open = !open;
+  mMenu.classList.toggle('open', open);
+  burger.querySelectorAll('span')[0].style.transform = open ? 'rotate(45deg) translate(5px,5px)' : '';
+  burger.querySelectorAll('span')[1].style.opacity  = open ? '0' : '1';
+  burger.querySelectorAll('span')[2].style.transform = open ? 'rotate(-45deg) translate(5px,-5px)' : '';
+});
+
+function closeMenu() {
+  open = false;
+  mMenu.classList.remove('open');
+  burger.querySelectorAll('span').forEach(s => { s.style.transform = ''; s.style.opacity = '1'; });
+}
+
+/* ── Gallery tabs ── */
+document.querySelectorAll('.tab').forEach(t => {
+  t.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+  });
+});
+
+/* ── Calendar ── */
+document.querySelectorAll('.cal-d:not(.empty)').forEach(d => {
+  d.addEventListener('click', () => {
+    document.querySelectorAll('.cal-d').forEach(x => x.classList.remove('active'));
+    d.classList.add('active');
+  });
+});
+
+/* ── Scroll nav highlight ── */
+const navLinks = document.querySelectorAll('.nav-links a[href^="#"]');
+window.addEventListener('scroll', () => {
+  let cur = '';
+  document.querySelectorAll('section[id]').forEach(s => {
+    if (window.scrollY >= s.offsetTop - 90) cur = s.id;
+  });
+  navLinks.forEach(a => {
+    const isActive = a.getAttribute('href') === '#' + cur;
+    a.style.color = isActive ? 'var(--black)' : '';
+  });
+}, { passive: true });
+
+/* ── Scroll reveal (lightweight) ── */
+const reveal = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.style.opacity = '1';
+      e.target.style.transform = 'translateY(0)';
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.svc, .tcard, .gcell').forEach(el => {
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(20px)';
+  el.style.transition = 'opacity .5s ease, transform .5s ease';
+  reveal.observe(el);
+});
+</script>
+</body>
+</html>
